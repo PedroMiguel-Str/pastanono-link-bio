@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4ECDB">
+<meta name="description" content="Fotos dos eventos do Bistrô Pasta Nono. Encontre o seu evento, veja e baixe as fotos.">
+<title>Fotos dos eventos · Bistrô Pasta Nono</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+  /* Mesma paleta e moldura da página principal (../index.html) */
+  :root{
+    --crema:#F4ECDB; --panna:#FBF7EE; --crema-deep:#E8DCC4; --linha:#D9CCB2;
+    --nero:#141210; --verde:#2E7D4F; --verde-deep:#1E5C39;
+    --rosso:#C2362B; --rosso-deep:#9A271F;
+    --oro:#C8A24C; --oro-deep:#A07F32; --oro-soft:#E4CF95; --vino:#6B2434;
+    --ink-soft:rgba(20,18,16,.74);
+    --ink-faint:rgba(20,18,16,.40);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    min-height:100dvh;
+    font-family:'Montserrat',system-ui,sans-serif;
+    color:var(--nero);
+    background-color:var(--crema-deep);
+    background-image:
+      radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.30), transparent 55%),
+      radial-gradient(140% 120% at 50% 100%, rgba(70,45,20,.10), transparent 60%);
+    display:flex;
+    justify-content:center;
+    padding:
+      max(14px, env(safe-area-inset-top))
+      max(14px, env(safe-area-inset-right))
+      max(14px, env(safe-area-inset-bottom))
+      max(14px, env(safe-area-inset-left));
+  }
+  .frame{
+    position:relative;
+    width:100%;
+    max-width:460px;
+    border:1.4px solid var(--rosso);
+    border-radius:3px;
+    background:radial-gradient(130% 80% at 50% 8%, var(--panna), var(--crema) 62%, #efe4cd 100%);
+    box-shadow:
+      inset 0 0 0 0.5px rgba(154,39,31,.25),
+      inset 0 0 70px rgba(80,50,22,.10),
+      0 18px 40px rgba(40,26,12,.16);
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .frame::before{
+    content:"";
+    position:absolute; inset:6px;
+    border:1px solid rgba(154,39,31,.50);
+    border-radius:2px;
+    pointer-events:none;
+    z-index:3;
+  }
+  .vila{
+    position:absolute;
+    top:10px; right:12px;
+    width:96px; height:auto;
+    opacity:.40;
+    z-index:1;
+    pointer-events:none;
+    mix-blend-mode:multiply;
+  }
+  .content{
+    position:relative;
+    z-index:5;
+    padding:26px 24px 28px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    min-height:100%;
+  }
+
+  /* ---------- Topo ---------- */
+  .back{
+    align-self:flex-start;
+    display:inline-flex; align-items:center; gap:6px;
+    min-height:40px;
+    padding:0 4px;
+    font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--verde-deep);
+    text-decoration:none;
+  }
+  .back svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .back:focus-visible{outline:2px solid var(--oro); outline-offset:2px; border-radius:4px}
+  .logo{width:132px; max-width:50%; height:auto; display:block; margin:6px auto 0}
+  .eyebrow{
+    margin:20px 0 8px;
+    font-weight:600; font-size:11px;
+    letter-spacing:.42em; text-indent:.42em;
+    color:var(--oro-deep); text-transform:uppercase;
+    text-align:center;
+  }
+  h1{
+    margin:0;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic; font-weight:500;
+    font-size:clamp(28px, 8.4vw, 34px);
+    line-height:1.15;
+    color:var(--rosso-deep);
+    text-align:center;
+  }
+  .intro{
+    margin:10px 0 0;
+    max-width:30ch;
+    font-size:13px; line-height:1.55;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+  .floron{
+    width:150px;height:22px;
+    margin:16px 0 20px;
+    stroke:var(--oro-deep); fill:none;
+    stroke-width:1.3; stroke-linecap:round; stroke-linejoin:round;
+  }
+
+  /* ---------- Cartão do evento ---------- */
+  .events{width:100%; display:flex; flex-direction:column; gap:18px}
+  .event{
+    background:var(--panna);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:
+      inset 0 0 0 1px var(--linha),
+      0 10px 24px rgba(40,26,12,.12);
+  }
+  .event-cover{
+    position:relative;
+    display:block;
+    width:100%;
+    aspect-ratio:16/10;
+    padding:0; border:0;
+    background:var(--crema-deep);
+    cursor:zoom-in;
+  }
+  .event-cover img{width:100%;height:100%;object-fit:cover;display:block}
+  .event-cover::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, transparent 55%, rgba(20,18,16,.45));
+    pointer-events:none;
+  }
+  .date-badge{
+    position:absolute; left:12px; bottom:12px; z-index:1;
+    display:flex; flex-direction:column; align-items:center;
+    min-width:52px;
+    padding:6px 8px 5px;
+    border-radius:10px;
+    background:var(--panna);
+    color:var(--rosso-deep);
+    box-shadow:0 4px 12px rgba(0,0,0,.18);
+    line-height:1;
+  }
+  .date-badge b{font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600}
+  .date-badge span{margin-top:3px; font-size:9.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--oro-deep)}
+
+  .event-body{padding:16px 16px 18px}
+  .event-title{
+    margin:0;
+    font-family:'Cormorant Garamond',serif;
+    font-size:25px; font-weight:600;
+    line-height:1.1;
+    color:var(--verde-deep);
+  }
+  .event-meta{
+    margin:5px 0 0;
+    font-size:11.5px; font-weight:500;
+    letter-spacing:.04em;
+    color:var(--ink-soft);
+  }
+
+  /* mini prévia: faixa de fotos com rolagem lateral */
+  .strip{
+    display:flex; gap:8px;
+    margin:14px -16px 0;
+    padding:0 16px 4px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .strip::-webkit-scrollbar{display:none}
+  .thumb{
+    flex:0 0 auto;
+    width:76px; height:76px;
+    padding:0; border:0;
+    border-radius:10px;
+    overflow:hidden;
+    background:var(--crema-deep);
+    scroll-snap-align:start;
+    cursor:zoom-in;
+    box-shadow:inset 0 0 0 1px var(--linha);
+  }
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .thumb:focus-visible, .event-cover:focus-visible{outline:2px solid var(--oro); outline-offset:2px}
+
+  .cta{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    min-height:52px;
+    margin-top:16px;
+    padding:0 18px;
+    border-radius:40px;
+    text-decoration:none;
+    font-weight:600; font-size:14.5px; letter-spacing:.012em;
+    color:var(--panna);
+    background:linear-gradient(176deg, #2f7b50 0%, var(--verde-deep) 58%, #184d30 100%);
+    box-shadow:
+      inset 0 0 0 2px var(--oro-soft),
+      inset 0 1px 0 rgba(255,255,255,.16),
+      0 7px 18px rgba(24,58,38,.28);
+    transition:transform .16s ease, filter .16s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .cta svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .cta:hover{filter:brightness(1.05)}
+  .cta:active{transform:translateY(1px)}
+  .cta:focus-visible{outline:2px solid var(--oro); outline-offset:3px}
+  .hint{
+    margin:10px 0 0;
+    font-size:11px; line-height:1.5;
+    color:var(--ink-faint);
+    text-align:center;
+  }
+
+  footer{
+    margin-top:auto;
+    padding-top:30px;
+    text-align:center;
+  }
+  footer a{
+    font-size:12.5px; font-weight:600; letter-spacing:.04em;
+    color:var(--verde-deep); text-decoration:none;
+  }
+
+  /* ---------- Visualizador de foto ---------- */
+  .viewer{
+    position:fixed; inset:0; z-index:50;
+    display:none;
+    align-items:center; justify-content:center;
+    padding:16px;
+    background:rgba(20,18,16,.92);
+  }
+  .viewer.open{display:flex}
+  .viewer img{
+    max-width:100%;
+    max-height:calc(100dvh - 120px);
+    border-radius:6px;
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
+  }
+  .viewer button{
+    position:absolute;
+    width:46px; height:46px;
+    border:0; border-radius:50%;
+    background:rgba(251,247,238,.14);
+    color:var(--panna);
+    display:grid; place-items:center;
+    cursor:pointer;
+  }
+  .viewer button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .viewer .v-close{top:max(14px, env(safe-area-inset-top)); right:14px}
+  .viewer .v-prev{left:10px; top:50%; transform:translateY(-50%)}
+  .viewer .v-next{right:10px; top:50%; transform:translateY(-50%)}
+  .viewer .v-count{
+    position:absolute; bottom:max(18px, env(safe-area-inset-bottom));
+    left:0; right:0; text-align:center;
+    font-size:12px; letter-spacing:.12em; color:rgba(251,247,238,.75);
+  }
+
+  @media (prefers-reduced-motion:no-preference){
+    .content > *{animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
+    .events{animation-delay:.12s}
+    @keyframes rise{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+  }
+</style>
+</head>
+<body>
+
+<main class="frame">
+  <img class="vila" src="../assets/vila-toscana.png" alt="" aria-hidden="true">
+
+  <div class="content">
+    <a class="back" href="../" aria-label="Voltar para a página inicial do Pasta Nono">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      Voltar
+    </a>
+
+    <img class="logo" src="../assets/logo-ink.png" alt="Bistrô Pasta Nono, Cucina Italiana">
+    <p class="eyebrow">Ricordi</p>
+    <h1>Fotos dos eventos</h1>
+    <p class="intro">Escolha o seu evento, veja as fotos e baixe as suas lembranças.</p>
+    <svg class="floron" viewBox="0 0 150 22" aria-hidden="true">
+      <path fill="#E4CF95" d="M75 5c3 3 3 8.5 0 12c-3-3.5-3-9 0-12Z"/>
+      <path d="M67 11H24M83 11h43"/>
+      <path fill="#E4CF95" d="M50 11c-3-3-7.5-3-11-.6 3.5 2.4 8 2.4 11 .6Z"/>
+      <path fill="#E4CF95" d="M100 11c3-3 7.5-3 11-.6-3.5 2.4-8 2.4-11 .6Z"/>
+      <circle cx="20" cy="11" r="1.8" fill="#A07F32" stroke="none"/>
+      <circle cx="130" cy="11" r="1.8" fill="#A07F32" stroke="none"/>
+    </svg>
+
+    <!--
+      Lista de eventos. Para incluir um novo evento:
+      1. Gere as fotos em assets/eventos/<slug-data>/ (foto-N.webp até 1400px e mini-N.webp 480x480).
+      2. Copie o bloco <article class="event"> abaixo e coloque o mais recente PRIMEIRO.
+      3. Troque data, título, imagens e o link da pasta do Google Drive (pasta compartilhada "qualquer pessoa com o link").
+    -->
+    <section class="events" aria-label="Eventos">
+
+      <!-- Networking Feminino · 16/11/2026 -->
+      <article class="event" data-gallery>
+        <button class="event-cover" type="button" data-index="0" data-alt="Participantes do Networking Feminino reunidas no salão do Pasta Nono" aria-label="Ampliar foto de capa do Networking Feminino">
+          <img src="../assets/eventos/networking-feminino-2026-11-16/foto-1.webp" width="1400" height="933"
+               alt="Participantes do Networking Feminino reunidas no salão do Pasta Nono">
+          <span class="date-badge" aria-hidden="true"><b>16</b><span>nov</span></span>
+        </button>
+        <div class="event-body">
+          <h2 class="event-title">Networking Feminino</h2>
+          <p class="event-meta">16 de novembro de 2026</p>
+
+          <div class="strip" aria-label="Prévia das fotos">
+            <button class="thumb" type="button" data-index="1" data-alt="Anfitriões do evento em frente ao letreiro do Pasta Nono" aria-label="Ampliar: Anfitriões do evento em frente ao letreiro do Pasta Nono">
+              <img src="../assets/eventos/networking-feminino-2026-11-16/mini-2.webp" alt="" loading="lazy" width="480" height="480">
+            </button>
+            <button class="thumb" type="button" data-index="2" data-alt="Mesas com toalhas xadrez e convidadas no salão decorado" aria-label="Ampliar: Mesas com toalhas xadrez e convidadas no salão decorado">
+              <img src="../assets/eventos/networking-feminino-2026-11-16/mini-3.webp" alt="" loading="lazy" width="480" height="480">
+            </button>
+            <button class="thumb" type="button" data-index="3" data-alt="Quatro convidadas sorrindo à mesa durante o jantar" aria-label="Ampliar: Quatro convidadas sorrindo à mesa durante o jantar">
+              <img src="../assets/eventos/networking-feminino-2026-11-16/mini-4.webp" alt="" loading="lazy" width="480" height="480">
+            </button>
+            <button class="thumb" type="button" data-index="4" data-alt="Duas convidadas conversando à mesa com taças de vinho" aria-label="Ampliar: Duas convidadas conversando à mesa com taças de vinho">
+              <img src="../assets/eventos/networking-feminino-2026-11-16/mini-5.webp" alt="" loading="lazy" width="480" height="480">
+            </button>
+            <button class="thumb" type="button" data-index="5" data-alt="Apresentação de uma das participantes ao microfone" aria-label="Ampliar: Apresentação de uma das participantes ao microfone">
+              <img src="../assets/eventos/networking-feminino-2026-11-16/mini-6.webp" alt="" loading="lazy" width="480" height="480">
+            </button>
+            <button class="thumb" type="button" data-index="6" data-alt="Duas convidadas conversando à mesa durante o evento" aria-label="Ampliar: Duas convidadas conversando à mesa durante o evento">
+              <img src="../assets/eventos/networking-feminino-2026-11-16/mini-7.webp" alt="" loading="lazy" width="480" height="480">
+            </button>
+          </div>
+
+          <a class="cta" href="https://drive.google.com/drive/folders/1iPQ_ZTvESVRzMJ_mpKBQ4xvrOxa9ftlp?usp=drive_link"
+             target="_blank" rel="noopener noreferrer"
+             aria-label="Ver e baixar todas as fotos do Networking Feminino, abre o Google Drive">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5v10.2M7.8 10.6l4.2 4.2 4.2-4.2"/><path d="M5 16.6v1.4a1.6 1.6 0 0 0 1.6 1.6h10.8a1.6 1.6 0 0 0 1.6-1.6v-1.4"/></svg>
+            Ver e baixar as fotos
+          </a>
+          <p class="hint">As fotos abrem no Google Drive. Toque na foto e use o botão de download.</p>
+        </div>
+      </article>
+
+    </section>
+
+    <footer>
+      <a href="https://www.instagram.com/pasta_nono/" target="_blank" rel="noopener noreferrer"
+         aria-label="Perfil do Pasta Nono no Instagram">@pasta_nono</a>
+    </footer>
+  </div>
+</main>
+
+<!-- Visualizador da prévia (sem dependências externas) -->
+<div class="viewer" role="dialog" aria-modal="true" aria-label="Foto ampliada" hidden>
+  <button class="v-close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button class="v-prev" type="button" aria-label="Foto anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <img alt="">
+  <button class="v-next" type="button" aria-label="Próxima foto"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+  <p class="v-count" aria-live="polite"></p>
+</div>
+
+<script>
+(function(){
+  var viewer = document.querySelector('.viewer');
+  var img = viewer.querySelector('img');
+  var count = viewer.querySelector('.v-count');
+  var page = document.querySelector('main.frame');
+  var photos = [], current = 0, lastFocus = null;
+
+  function show(i){
+    current = (i + photos.length) % photos.length;
+    img.src = photos[current].src;
+    img.alt = photos[current].alt;
+    count.textContent = 'Foto ' + (current + 1) + ' de ' + photos.length;
+  }
+  function open(gallery, i){
+    photos = gallery;
+    lastFocus = document.activeElement;
+    viewer.hidden = false;
+    page.inert = true; page.setAttribute('aria-hidden','true');
+    viewer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    show(i);
+    viewer.querySelector('.v-close').focus();
+  }
+  function close(){
+    viewer.classList.remove('open');
+    viewer.hidden = true;
+    page.inert = false; page.removeAttribute('aria-hidden');
+    document.body.style.overflow = '';
+    img.removeAttribute('src');
+    if (lastFocus && lastFocus !== document.body) lastFocus.focus();
+    else if (viewer.contains(document.activeElement)) document.activeElement.blur();
+  }
+
+  document.querySelectorAll('[data-gallery]').forEach(function(card){
+    var title = card.querySelector('.event-title').textContent;
+    var buttons = card.querySelectorAll('[data-index]');
+    var gallery = Array.prototype.map.call(buttons, function(b){
+      var src = b.querySelector('img').getAttribute('src').replace(/mini-(\d+)\.webp$/, 'foto-$1.webp');
+      return { src: src, alt: b.dataset.alt || ('Foto do ' + title + ' no Pasta Nono') };
+    });
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){ open(gallery, Number(b.dataset.index)); });
+    });
+  });
+
+  viewer.querySelector('.v-close').addEventListener('click', close);
+  viewer.querySelector('.v-prev').addEventListener('click', function(e){ e.stopPropagation(); show(current - 1); });
+  viewer.querySelector('.v-next').addEventListener('click', function(e){ e.stopPropagation(); show(current + 1); });
+  viewer.addEventListener('click', function(e){ if (e.target === viewer) close(); });
+  document.addEventListener('keydown', function(e){
+    if (!viewer.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'Tab'){
+      // mantém o foco dentro do visualizador
+      var f = viewer.querySelectorAll('button'), first = f[0], last = f[f.length-1];
+      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+      else if (!viewer.contains(document.activeElement)){ e.preventDefault(); first.focus(); }
+    }
+    if (e.key === 'ArrowLeft') show(current - 1);
+    if (e.key === 'ArrowRight') show(current + 1);
+  });
+
+  // deslizar para trocar de foto no celular
+  var x0 = null;
+  viewer.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, {passive:true});
+  viewer.addEventListener('touchend', function(e){
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+})();
+</script>
+</body>
+</html>
